@@ -1,0 +1,28 @@
+{  
+"gender":"male",
+"timeline":{
+        "Life":{
+            "start":"19951001"
+        },
+        "PrimarySchool":{
+            "start":"20010901",
+            "end":"20070610"
+        },
+        "JuniorHighSchool":{
+            "start":"20070901",
+            "end":"20100610"
+        },
+        "HighSchool":{
+            "start":"20100901",
+            "end":"20130610"
+        },
+        "University":{
+            "start":"20130901",
+            "end":"20170610"
+        },
+        "Postgraduate":{
+            "start":"20170901",
+            "end":"20190610"
+        }
+    }
+}
