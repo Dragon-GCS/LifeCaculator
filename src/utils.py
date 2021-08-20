@@ -133,15 +133,13 @@ def life_percentage(birth: str, total_days: int) -> float:
 def load_timeline() -> dict:
     """
     Get the timeline infomation
-    Args:
-        None
     Returns:
         returns: timeline dict, {event0:{start,end},...}
     """
-    filename = os.path.join(os.path.dirname(__file__), "timeline.json")
+    filename = ROOT.joinpath("data",  "timeline.json")
     if not os.path.isfile(filename):
-        filename = os.path.join(os.path.dirname(__file__),
-                                DEFAULT_FILENAME)
+        filename = DEFAULT_FILENAME
+                            
     with open(filename) as f:
         data = json.load(f)
         timeline = data.get("timeline")

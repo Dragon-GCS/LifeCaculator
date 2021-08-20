@@ -4,7 +4,10 @@
 
 ### 20210820更新：
 
->使用`draw_anything.py`可以展示其他格式的数据，数据格式为： ```data = {"event name":{"value": value}, ...}```
+> * 数据保存在`data`文件夹内，新增`anything.json`用于绘制任意百分比数据
+> * 使用`draw_anything.py`可以展示其他格式的数据，数据格式为： ```data = {"event name":{"value": value}, ...}```
+
+
 
 ---
 ### 使用说明

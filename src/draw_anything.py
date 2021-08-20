@@ -5,24 +5,29 @@
 # draw other format data by blocks
 # data = {"event name":{"value": value}, ...}
 
-from prettytable.prettytable import NONE
+import json
 from utils import *
+from config import *
 from colorama import init
+
 import prettytable as prt
-from config import BLOCK_PER_LINE
 
 
+def read_data(filename):
+    filename = ROOT.joinpath("data", filename)
+
+    if not os.path.isfile(filename):
+        print(f"File was not found: '{filename}'")
+        exit(0)
+
+    with open(filename) as f:
+        return json.load(f)
 
 def main():
     init(autoreset=True)
-    # default data, you can read data from json file.
-    data = {
-        "House":    {"value":4337.0},
-        "Payment":  {"value":1601.0},
-        "Food":     {"value":588.93},
-        "Daily Necessities": {"value":182.7},
-        "Healthy":  {"value":70.2},
-        "Sport":    {"value":33.0}}
+
+    filename = "anything.json"
+    data = read_data(filename)
 
     total_value = sum(value["value"] for value in data.values())
     total_blocks = 12 * BLOCK_PER_LINE    # block numbers to show
@@ -31,14 +36,19 @@ def main():
 
     pt = prt.PrettyTable(hrules=prt.ALL, vrules=prt.NONE)
     pt.field_names = ["Item", "Value", "Percentage", "Style"]
+
     intervels = []
+
     for item, detail in data.items():
-        value = detail['value']
+        value = round(detail['value'], 2)
         style = detail["style"] + SYMBOL + Fore.RESET
+
         percent = f"{percentage(value, total_value):.2f}%"
-        intervels.append((round(total_blocks * value / total_value),detail["style"]))
         pt.add_row([item, value, percent, style])
-    pt.add_row(["Total", total_value, "100.0%", ""])
+
+        intervels.append((round(total_blocks * value / total_value),detail["style"]))
+        
+    pt.add_row(["Total", f"{total_value:.1f}", "100.0%", ""])
     print(pt)
     
     draw_blocks(intervels, total_blocks)
