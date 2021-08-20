@@ -5,26 +5,25 @@
 # draw other format data by blocks
 # data = {"event name":{"value": value}, ...}
 
+from prettytable.prettytable import NONE
 from utils import *
 from colorama import init
 import prettytable as prt
 from config import BLOCK_PER_LINE
 
-# default data, you can read data from json file.
-data = {
-    "House":    {"value":4337.0},
-    "Payment":  {"value":1601.0},
-    "Food":     {"value":588.93},
-    "Daily Necessities": {"value":182.7},
-    "Healthy":  {"value":70.2},
-    "Sport":    {"value":33.0},
-}
 
 
-
-if __name__ == '__main__':
+def main():
     init(autoreset=True)
-    
+    # default data, you can read data from json file.
+    data = {
+        "House":    {"value":4337.0},
+        "Payment":  {"value":1601.0},
+        "Food":     {"value":588.93},
+        "Daily Necessities": {"value":182.7},
+        "Healthy":  {"value":70.2},
+        "Sport":    {"value":33.0}}
+
     total_value = sum(value["value"] for value in data.values())
     total_blocks = 12 * BLOCK_PER_LINE    # block numbers to show
     
@@ -39,7 +38,13 @@ if __name__ == '__main__':
         percent = f"{percentage(value, total_value):.2f}%"
         intervels.append((round(total_blocks * value / total_value),detail["style"]))
         pt.add_row([item, value, percent, style])
+    pt.add_row(["Total", total_value, "100.0%", ""])
     print(pt)
     
     draw_blocks(intervels, total_blocks)
+
+
+if __name__ == '__main__':
+    os.system("cls")
+    main()
     
