@@ -8,21 +8,22 @@ import json
 import calendar
 import time
 from datetime import datetime
-from colorama import Fore, init
-
-LIFESPAN = {"average": 76.34, "male": 73.64, "famale": 79.43}
-# source:https://data.stats.gov.cn/easyquery.htm?cn=C01&zb=A0304&sj=2019
-TIMEFORMAT = "%Y%m%d"
-SYMBOL = "■"
-birthday = "19951001"  # default
-
+from colorama import Fore
+from config import *
 
 def draw_blocks(intervals: list, total_blocks: int) -> None:
+    """
+    Args:
+        intervals: list of intervals of events, [(span_month, style), ...]
+        total_blocks: total num of blocks to draw
+    """
+    # 计算最后的事件结束到人生结束的时间
     intervals.append((total_blocks - sum([interval[0] for interval in intervals]), Fore.WHITE))
+    # 生成Symbol
     styles = ''.join([(style + SYMBOL) * m for m, style in intervals]).split(SYMBOL)[:-1]
     for idx, style in enumerate(styles):
         print(style + SYMBOL, end="")
-        if idx % 48 == 47:
+        if idx % BLOCK_PER_LINE == BLOCK_PER_LINE-1:
             print()
     print()
 
@@ -34,7 +35,7 @@ def get_each_interval(timeline: dict):
         timeline: timeline dict
     Returns:
         timeline: timeline dict include event's 'span' and 'pre_interval'
-        span: list of intervals of events, [(span_month, style), ...]
+        intervals: list of intervals of events, [(span_month, style), ...]
     """
     intervals = []
     for idx, (event, detail) in enumerate(timeline.items()):
@@ -140,7 +141,7 @@ def load_timeline() -> dict:
     filename = os.path.join(os.path.dirname(__file__), "timeline.json")
     if not os.path.isfile(filename):
         filename = os.path.join(os.path.dirname(__file__),
-                                "timeline.default.json")
+                                DEFAULT_FILENAME)
     with open(filename) as f:
         data = json.load(f)
         timeline = data.get("timeline")
